@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Goa Beaches - Jatayu Travels</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50">
+
+  <nav class="navbar navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">← Back | Jatayu Travels</a>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <h1 class="fw-bold text-primary mb-3 text-center">Goa Beaches</h1>
+    <img src="assets/images/goa.jpeg" alt="Goa" class="img-fluid rounded shadow mb-4 mx-auto d-block">
+    <p class="lead text-center text-muted mb-4">
+      Goa is India’s sunshine state, known for its beautiful beaches, vibrant nightlife, and Portuguese heritage.
+      Experience water sports, beach shacks, and breathtaking sunsets at Baga, Calangute, and Anjuna.
+    </p>
+    <div class="text-center">
+      <a href="booking.html" class="btn btn-primary btn-lg">Book Your Goa Trip</a>
+    </div>
+  </div>
+
+  <footer class="bg-white border-top py-3 text-center text-muted">
+    © <span id="year"></span> Jatayu Travels
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

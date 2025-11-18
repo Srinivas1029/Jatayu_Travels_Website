@@ -1,0 +1,51 @@
+/* ===========================================================
+   Jatayu Travels – Custom Stylesheet
+   Author: Narlapuram Karthik
+   Purpose: Minor styling enhancements on top of Bootstrap + Tailwind
+   =========================================================== */
+
+/* ========== GLOBAL RESET ========== */
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8fafc; /* light slate tone */
+  color: #222;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #0d6efd !important;
+}
+
+.navbar .nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #0d6efd;
+}
+
+/* ========== HERO SECTION ========== */
+header h1 {
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+header p {
+  color: #555;
+}
+
+/* ===*

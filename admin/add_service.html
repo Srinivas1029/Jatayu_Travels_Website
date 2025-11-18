@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Add Service - Admin | Jatayu Travels</title>
+
+  <!-- Bootstrap + Tailwind -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-slate-50">
+
+  <!-- Admin Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="dashboard.html">Jatayu Admin</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="adminNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="manage_services.html">Manage Services</a></li>
+          <li class="nav-item"><a class="nav-link active fw-semibold" href="add_service.html">Add Service</a></li>
+          <li class="nav-item"><a class="nav-link" href="manage_bookings.html">Manage Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="../jatayu_travels/index.html" target="_blank">View Site</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-light btn-sm ms-lg-3 text-primary" href="login.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-white border-bottom">
+    <div class="container py-4">
+      <h1 class="h3 fw-bold text-primary mb-1" id="formTitle">Add Service</h1>
+      <p class="text-muted mb-0">Create a new package or edit an existing one.</p>
+    </div>
+  </header>
+
+  <!-- Form -->
+  <section class="container py-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <form id="serviceForm" class="row g-3 needs-validation" novalidate>
+          <div class="col-md-6">
+            <label class="form-label">Service Name *</label>
+            <input type="text" id="service_name" class="form-control" required>
+            <div class="invalid-feedback">Please enter a service name.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Category *</label>
+            <input type="text" id="service_category" class="form-control" required>
+            <div class="invalid-feedback">Enter a category.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Price (₹) *</label>
+            <input type="number" id="service_price" class="form-control" min="0" step="1" required>
+            <div class="invalid-feedback">Enter a valid price.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Status *</label>
+            <select id="service_status" class="form-select" required>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <div class="invalid-feedback">Select a status.</div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Image URL (optional)</label>
+            <input type="url" id="service_image" class="form-control" placeholder="https://example.com/image.jpg">
+            <div class="form-text">Use a direct image URL (JPG/PNG).</div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea id="service_description" rows="4" class="form-control" placeholder="Brief details about the package…"></textarea>
+          </div>
+
+          <div class="col-12 d-flex gap-2">
+            <button class="btn btn-primary" type="submit" id="saveBtn">Save</button>
+            <a href="manage_services.html" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preview (optional) -->
+  <section class="container pb-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h5 class="fw-bold text-primary mb-3">Preview</h5>
+        <div class="row g-3 align-items-center">
+          <div class="col-md-4">
+            <img id="previewImg" src="" alt="Preview" class="img-fluid rounded d-none">
+            <div id="noImg" class="text-muted">No image selected.</div>
+          </div>
+          <div class="col-md-8">
+            <h5 id="previewName" class="mb-1">—</h5>
+            <div class="text-muted mb-2" id="previewCat">—</div>
+            <div class="mb-2"><span id="previewPrice" class="badge bg-secondary">₹ 0</span> <span id="previewStatus" class="badge bg-secondary ms-2">Inactive</span></div>
+            <p id="previewDesc" class="mb-0 text-muted">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-top py-3 text-center text-muted">
+    © <span id="year"></span> Jatayu Travels | Admin Panel
+  </footer>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const LS_KEY = 'jt_services';
+
+    function getServices() {
+      try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+      catch { return []; }
+    }
+    function setServices(list) {
+      localStorage.setItem(LS_KEY, JSON.stringify(list));
+    }
+    function byId(id) { return document.getElementById(id); }
+
+    const form = byId('serviceForm');
+    const fields = {
+      id: null,
+      name: byId('service_name'),
+      category: byId('service_category'),
+      price: byId('service_price'),
+      status: byId('service_status'),
+      image: byId('service_image'),
+      description: byId('service_description'),
+    };
+
+    // Preview bindings
+    const previewImg = byId('previewImg');
+    const noImg = byId('noImg');
+    const previewName = byId('previewName');
+    const previewCat = byId('previewCat');
+    const previewPrice = byId('previewPrice');
+    const previewStatus = byId('previewStatus');
+    const previewDesc = byId('previewDesc');
+
+    function updatePreview() {
+      const img = fields.image.value.trim();
+      if (img) {
+        previewImg.src = img;
+        previewImg.classList.remove('d-none');
+        noImg.classList.add('d-none');
+      } else {
+        previewImg.classList.add('d-none');
+        noImg.classList.remove('d-none');
+      }
+      previewName.textContent = fields.name.value || '—';
+      previewCat.textContent  = fields.category.value || '—';
+      previewPrice.textContent = '₹ ' + Number(fields.price.value || 0).toLocaleString('en-IN');
+      previewStatus.textContent = fields.status.value;
+      previewStatus.className = 'badge ' + (fields.status.value === 'Active' ? 'bg-success' : 'bg-secondary');
+      previewDesc.textContent = fields.description.value || '—';
+    }
+    ['input','change','keyup'].forEach(ev => {
+      Object.values(fields).forEach(el => { if (el && el.addEventListener) el.addEventListener(ev, updatePreview); });
+    });
+
+    // Form validation + submit
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      const services = getServices();
+      const record = {
+        id: fields.id || crypto.randomUUID(),
+        name: fields.name.value.trim(),
+        category: fields.category.value.trim(),
+        price: Number(fields.price.value || 0),
+        status: fields.status.value,
+        image: fields.image.value.trim(),
+        description: fields.description.value.trim(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const idx = services.findIndex(s => s.id === record.id);
+      if (idx >= 0) services[idx] = record; else services.push(record);
+      setServices(services);
+
+      // Redirect back
+      window.location.href = 'manage_services.html';
+    });
+
+    // Edit mode: read ?id=
+    function getParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+    function loadForEdit() {
+      const id = getParam('id');
+      if (!id) return;
+      const services = getServices();
+      const found = services.find(s => s.id === id);
+      if (!found) return;
+
+      document.getElementById('formTitle').textContent = 'Edit Service';
+      fields.id = id;
+      fields.name.value = found.name || '';
+      fields.category.value = found.category || '';
+      fields.price.value = found.price || 0;
+      fields.status.value = found.status || 'Inactive';
+      fields.image.value = found.image || '';
+      fields.description.value = found.description || '';
+      updatePreview();
+    }
+
+    // Year + init
+    document.getElementById('year').textContent = new Date().getFullYear();
+    updatePreview();
+    loadForEdit();
+  </script>
+</body>
+</html>
